@@ -13,18 +13,35 @@ import java.util.logging.Logger;
 
 /**
  * Project: bet victor test
- * For:
+ * For: Service for getting randomtext.me
  * Created by damekjan on 16/08/2017.
  */
 @Singleton
 public class RandomtextService {
 
+    /**
+     * url for request
+     */
     private static final String RANDOMTEXT_URL_API = "http://www.randomtext.me/api/{type}/p-{paragraphs}/{min}-{max}";
+    /**
+     * type of request
+     */
     private static final String GEBBERISH = "gibberish";
 
+    /**
+     * logger
+     */
     @Inject
     private Logger logger;
 
+    /**
+     * get responce from randomtext.me
+     *
+     * @param paragraphs number of paragraph
+     * @param min        words
+     * @param max        words
+     * @return RandomText
+     */
     public RandomText request(Integer paragraphs, Integer min, Integer max) {
         logger.log(Level.INFO, "Randomtext.me request for type:{0} p-{1} min:{2} max:{3}",
                 new Object[]{GEBBERISH, paragraphs, min, max});

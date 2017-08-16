@@ -18,9 +18,21 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Consumes(APPLICATION_JSON)
 public class RestEndpoint {
 
+    /**
+     * textService
+     */
     @Inject
     private TextService textService;
 
+    /**
+     * REST method GET
+     *
+     * @param pStart   start paragraph
+     * @param pEnd     end paragraph
+     * @param minCount min count of words
+     * @param maxCount max count of words
+     * @return Response
+     */
     @GET
     @Path("text")
     @Produces(APPLICATION_JSON)
@@ -32,6 +44,11 @@ public class RestEndpoint {
         return Response.ok().entity(textService.text(pStart, pEnd, minCount, maxCount)).build();
     }
 
+    /**
+     * REST method GET fro return last 10 request
+     *
+     * @return List
+     */
     @GET
     @Path("history")
     @Produces(APPLICATION_JSON)

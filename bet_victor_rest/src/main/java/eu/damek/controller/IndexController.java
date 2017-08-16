@@ -12,21 +12,35 @@ import java.util.Map;
 
 /**
  * Project: bet victor test
- * For:
+ * For: cotroller for home page
  * Created by damekjan on 16/08/2017.
  */
 @ManagedBean
 public class IndexController {
 
+    /**
+     * resultDAO
+     */
     @Inject
     private ResultDAO resultDAO;
 
+    /**
+     * getter for get all request
+     *
+     * @return List
+     */
     public List<Result> getHistory() {
         return resultDAO.getAll();
     }
 
-    public List<Map.Entry> words(Result r) {
-        List<Map.Entry> result = new ArrayList<>(r.getWords().entrySet());
+    /**
+     * sorted list of words with count
+     *
+     * @param inWords Result for get the words
+     * @return List
+     */
+    public List<Map.Entry> words(Result inWords) {
+        List<Map.Entry> result = new ArrayList<>(inWords.getWords().entrySet());
         result.sort(Comparator.comparingInt(o -> (Integer) ((Map.Entry) o).getValue()).reversed());
         return result;
     }

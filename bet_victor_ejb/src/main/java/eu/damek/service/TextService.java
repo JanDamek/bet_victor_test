@@ -27,14 +27,35 @@ import java.util.stream.IntStream;
 @Stateless
 public class TextService {
 
+    /**
+     * preg matcher for get text of paragraph
+     */
     private static final Pattern TAG_REGEX = Pattern.compile("<p>(.+?)</p>");
+    /**
+     * logger
+     */
     @Inject
     private Logger logger;
+    /**
+     * {@link RandomtextService}
+     */
     @Inject
     private RandomtextService randomtextService;
+    /**
+     * {@link ResultDAO}
+     */
     @Inject
     private ResultDAO resultDAO;
 
+    /**
+     * request from REST service
+     *
+     * @param pStart   of paragraph
+     * @param pEnd     of paragraph
+     * @param minCount words in paragraph
+     * @param maxCount words in paragraph
+     * @return TextResponse
+     */
     public TextResponse text(Integer pStart, Integer pEnd, Integer minCount, Integer maxCount) {
         logger.log(Level.INFO, "REST request for paragraf from:{0} to:{1} with min:{2} max:{3}",
                 new Object[]{pStart, pEnd, minCount, maxCount});
@@ -52,15 +73,29 @@ public class TextService {
         return result.getResponse();
     }
 
-    private void getRandomTextAndStore(Integer minCount, Integer maxCount, Integer i,
+    /**
+     * make request to API
+     *
+     * @param minCount  min count
+     * @param maxCount  max count
+     * @param paragraph paragraph
+     * @param result    final object of request {@link Result}
+     */
+    private void getRandomTextAndStore(Integer minCount, Integer maxCount, Integer paragraph,
                                        Result result) {
         RandomTextResponce randomTextResponce = new RandomTextResponce();
         randomTextResponce.setRequestStart(new Date().getTime());
-        randomTextResponce.setRandomText(randomtextService.request(i, minCount, maxCount));
+        randomTextResponce.setRandomText(randomtextService.request(paragraph, minCount, maxCount));
         randomTextResponce.setRequestEnd(new Date().getTime());
         result.getResponces().add(randomTextResponce);
     }
 
+    /**
+     * calculation of response
+     *
+     * @param responses final object of request {@link Result}
+     * @return TextResponse
+     */
     private TextResponse calcResponseText(Result responses) {
         logger.log(Level.INFO, "Calculation response");
         TextResponse result = new TextResponse();
@@ -88,31 +123,48 @@ public class TextService {
         return result;
     }
 
-    private void addEachResponceToTextResponse(RandomText r, Result result1) {
-        List<String> values = getTagValues(r.getTextOut());
+    /**
+     * counting mach words in each paragraph on {@link RandomTextResponce}
+     *
+     * @param randomText test from API
+     * @param result     final result of request
+     */
+    private void addEachResponceToTextResponse(RandomText randomText, Result result) {
+        List<String> values = getTagValues(randomText.getTextOut());
         values.forEach(p -> {
             List<String> words = Arrays.asList(p.split(" "));
             words.forEach(w -> {
-                if (result1.getWords().containsKey(w)) {
-                    Integer cnt = result1.getWords().get(w);
+                if (result.getWords().containsKey(w)) {
+                    Integer cnt = result.getWords().get(w);
                     cnt++;
-                    result1.getWords().put(w, cnt);
+                    result.getWords().put(w, cnt);
                 } else {
-                    result1.getWords().put(w, 1);
+                    result.getWords().put(w, 1);
                 }
             });
         });
     }
 
-    private List<String> getTagValues(final String str) {
+    /**
+     * parse string to List of text in paragraph
+     *
+     * @param string to pars
+     * @return List
+     */
+    private List<String> getTagValues(final String string) {
         final List<String> tagValues = new ArrayList<>();
-        final Matcher matcher = TAG_REGEX.matcher(str);
+        final Matcher matcher = TAG_REGEX.matcher(string);
         while (matcher.find()) {
             tagValues.add(matcher.group(1));
         }
         return tagValues;
     }
 
+    /**
+     * return list of 10 last request
+     *
+     * @return List
+     */
     public List<TextResponse> history() {
         return resultDAO.getLastTen().stream().map(Result::getResponse).collect(Collectors.toList());
     }
