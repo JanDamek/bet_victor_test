@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Project: bet victor test
- * For:
+ * For: Data access object fro {@link Result} {@link javax.persistence.Entity}
  * Created by damekjan on 16/08/2017.
  */
 @Stateless
@@ -32,19 +32,17 @@ public class ResultDAO {
     }
 
     /**
-     * persist or merge entity
+     * persist or merge entity. saved entity of {@link Result}
      *
      * @param entity {@link Result} entity to save
-     * @return saved entity of {@link Result}
      */
-    public Result save(Result entity) {
+    public void save(Result entity) {
         if (!em.contains(entity)) {
             em.persist(entity);
         } else {
             em.merge(entity);
         }
         em.flush();
-        return entity;
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * Project: bet victor test
- * For: cotroller for home page
+ * For: controller for home page
  * Created by damekjan on 16/08/2017.
  */
 @ManagedBean

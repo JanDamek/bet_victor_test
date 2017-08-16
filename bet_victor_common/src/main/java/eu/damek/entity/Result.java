@@ -52,17 +52,17 @@ public class Result implements Serializable {
     private Integer max;
 
     /**
-     * list of {@link RandomTextResponce} responces
+     * list of {@link RandomTextResponse} responses
      */
     @ElementCollection
-    private List<RandomTextResponce> responces;
+    private List<RandomTextResponse> responses;
     /**
-     * map of words in all paragraphs of all responces
+     * map of words in all paragraphs of all responses
      */
     @ElementCollection
     private Map<String, Integer> words;
     /**
-     * responce for REST
+     * response for REST
      */
     private TextResponse response;
 
@@ -124,7 +124,7 @@ public class Result implements Serializable {
     }
 
     /**
-     * getter of convertet timestamp of request to {@link Date}
+     * getter of converted timestamp of request to {@link Date}
      *
      * @return Date
      */
@@ -245,23 +245,23 @@ public class Result implements Serializable {
     }
 
     /**
-     * getter of list of {@link RandomTextResponce}
+     * getter of list of {@link RandomTextResponse}
      *
-     * @return RandomTextResponce
+     * @return RandomTextResponse
      */
-    public List<RandomTextResponce> getResponces() {
-        if (responces == null) {
-            responces = new ArrayList<>();
+    public List<RandomTextResponse> getResponses() {
+        if (responses == null) {
+            responses = new ArrayList<>();
         }
-        return responces;
+        return responses;
     }
 
     /**
-     * setter of list of {@link RandomTextResponce}
+     * setter of list of {@link RandomTextResponse}
      *
-     * @param responces {@link RandomTextResponce}
+     * @param responses {@link RandomTextResponse}
      */
-    public void setResponces(List<RandomTextResponce> responces) {
-        this.responces = responces;
+    public void setResponses(List<RandomTextResponse> responses) {
+        this.responses = responses;
     }
 }

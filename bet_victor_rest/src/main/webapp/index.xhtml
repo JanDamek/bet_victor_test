@@ -34,7 +34,7 @@
             <p:rowExpansion>
                 <p:tabView>
                     <p:tab title="#{msg.randomText}">
-                        <p:dataTable value="#{r.responces}" var="rm" paginator="true" rows="20">
+                        <p:dataTable value="#{r.responses}" var="rm" paginator="true" rows="20">
                             <p:column headerText="#{msg.requestStart}">
                                 <h:outputText value="#{rm.requestStartDate}">
                                     <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss.S"/>

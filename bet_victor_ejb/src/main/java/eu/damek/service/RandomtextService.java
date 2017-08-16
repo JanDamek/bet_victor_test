@@ -35,7 +35,7 @@ public class RandomtextService {
     private Logger logger;
 
     /**
-     * get responce from randomtext.me
+     * get response from randomtext.me
      *
      * @param paragraphs number of paragraph
      * @param min        words

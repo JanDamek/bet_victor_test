@@ -1,7 +1,7 @@
 package eu.damek.service;
 
 import eu.damek.dao.ResultDAO;
-import eu.damek.entity.RandomTextResponce;
+import eu.damek.entity.RandomTextResponse;
 import eu.damek.entity.Result;
 import eu.damek.model.RandomText;
 import eu.damek.model.TextResponse;
@@ -21,14 +21,14 @@ import java.util.stream.IntStream;
 
 /**
  * Project: bet_victor
- * For:
+ * For: Main service for process REST API request and get manage response from randomtext.me
  * Created by damekjan on 16/08/2017.
  */
 @Stateless
 public class TextService {
 
     /**
-     * preg matcher for get text of paragraph
+     * regular express for get text of paragraph
      */
     private static final Pattern TAG_REGEX = Pattern.compile("<p>(.+?)</p>");
     /**
@@ -57,7 +57,7 @@ public class TextService {
      * @return TextResponse
      */
     public TextResponse text(Integer pStart, Integer pEnd, Integer minCount, Integer maxCount) {
-        logger.log(Level.INFO, "REST request for paragraf from:{0} to:{1} with min:{2} max:{3}",
+        logger.log(Level.INFO, "REST request for paragraph from:{0} to:{1} with min:{2} max:{3}",
                 new Object[]{pStart, pEnd, minCount, maxCount});
         Result result = resultDAO.getNew();
         result.setParagraphFrom(pStart);
@@ -83,11 +83,11 @@ public class TextService {
      */
     private void getRandomTextAndStore(Integer minCount, Integer maxCount, Integer paragraph,
                                        Result result) {
-        RandomTextResponce randomTextResponce = new RandomTextResponce();
-        randomTextResponce.setRequestStart(new Date().getTime());
-        randomTextResponce.setRandomText(randomtextService.request(paragraph, minCount, maxCount));
-        randomTextResponce.setRequestEnd(new Date().getTime());
-        result.getResponces().add(randomTextResponce);
+        RandomTextResponse randomTextResponse = new RandomTextResponse();
+        randomTextResponse.setRequestStart(new Date().getTime());
+        randomTextResponse.setRandomText(randomtextService.request(paragraph, minCount, maxCount));
+        randomTextResponse.setRequestEnd(new Date().getTime());
+        result.getResponses().add(randomTextResponse);
     }
 
     /**
@@ -101,8 +101,8 @@ public class TextService {
         TextResponse result = new TextResponse();
         final Integer[] amount = {0};
         final Long[] totalProcessingTime = {0L};
-        responses.getResponces().forEach(r -> {
-            addEachResponceToTextResponse(r.getRandomText(), responses);
+        responses.getResponses().forEach(r -> {
+            addEachResponseToTextResponse(r.getRandomText(), responses);
             amount[0] += r.getRandomText().getAmount();
             totalProcessingTime[0] += r.getRequestEnd() - r.getRequestStart();
         });
@@ -116,20 +116,20 @@ public class TextService {
         });
 
         result.setFreqWord(fregWord[0]);
-        result.setAvgParagraphSize(amount[0] / responses.getResponces().size());
-        result.setAvgParagraphProcessingTime((int) (totalProcessingTime[0] / responses.getResponces().size()));
+        result.setAvgParagraphSize(amount[0] / responses.getResponses().size());
+        result.setAvgParagraphProcessingTime((int) (totalProcessingTime[0] / responses.getResponses().size()));
         result.setTotalProcessingTime(Math.toIntExact(totalProcessingTime[0]));
 
         return result;
     }
 
     /**
-     * counting mach words in each paragraph on {@link RandomTextResponce}
+     * counting mach words in each paragraph on {@link RandomTextResponse}
      *
      * @param randomText test from API
      * @param result     final result of request
      */
-    private void addEachResponceToTextResponse(RandomText randomText, Result result) {
+    private void addEachResponseToTextResponse(RandomText randomText, Result result) {
         List<String> values = getTagValues(randomText.getTextOut());
         values.forEach(p -> {
             List<String> words = Arrays.asList(p.split(" "));

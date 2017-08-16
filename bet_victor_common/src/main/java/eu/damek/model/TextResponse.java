@@ -3,10 +3,11 @@ package eu.damek.model;
 import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * Project: bet_victor
- * For: object for responce on REST
+ * For: object for response on REST
  * Created by damekjan on 16/08/2017.
  */
 @XmlType(propOrder = {
@@ -16,8 +17,12 @@ import javax.xml.bind.annotation.XmlType;
         "totalProcessingTime"
 })
 @Embeddable
-public class TextResponse {
+public class TextResponse implements Serializable {
 
+    /**
+     * {@inheritDoc}
+     */
+    private static final long serialVersionUID = -3595445059057021090L;
     /**
      * freqWord
      */

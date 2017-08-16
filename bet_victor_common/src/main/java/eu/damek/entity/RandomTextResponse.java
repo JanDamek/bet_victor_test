@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by damekjan on 16/08/2017.
  */
 @Embeddable
-public class RandomTextResponce implements Serializable {
+public class RandomTextResponse implements Serializable {
 
     /**
      * timestamp of start request to randomtext.me
@@ -24,7 +24,7 @@ public class RandomTextResponce implements Serializable {
      */
     private Long requestEnd;
     /**
-     * temporary store of Entity responce from randomtext.me
+     * temporary store of Entity response from randomtext.me
      */
     @Transient
     private RandomText randomText;

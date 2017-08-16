@@ -1,14 +1,19 @@
 package eu.damek.model;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.io.Serializable;
 
 /**
  * Project: bet victor test
- * For: parsing responce of randomtext.me
+ * For: parsing response of randomtext.me
  * Created by damekjan on 16/08/2017.
  */
-public class RandomText {
+public class RandomText implements Serializable {
 
+    /**
+     * {@inheritDoc}
+     */
+    private static final long serialVersionUID = 6096981194164455005L;
     /**
      * type
      */
