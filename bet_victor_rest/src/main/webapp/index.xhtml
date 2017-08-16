@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <ui:define name="content">
+        <h2 class="h3">
+            <h:outputText value="#{msg.list_all_request}"/>
+        </h2>
+
+        <p:dataTable value="#{indexController.history}" var="r" paginator="true" rows="20">
+            <p:column>
+                <p:rowToggler/>
+            </p:column>
+            <p:column headerText="#{msg.requestTime}">
+                <h:outputText value="#{r.requestDate}">
+                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="#{msg.paragrafFrom}">
+                <h:outputText value="#{r.paragraphFrom}"/>
+            </p:column>
+            <p:column headerText="#{msg.paragrafTo}">
+                <h:outputText value="#{r.paragraphTo}"/>
+            </p:column>
+            <p:column headerText="#{msg.minCount}">
+                <h:outputText value="#{r.min}"/>
+            </p:column>
+            <p:column headerText="#{msg.maxCount}">
+                <h:outputText value="#{r.max}"/>
+            </p:column>
+            <p:rowExpansion>
+                <p:tabView>
+                    <p:tab title="#{msg.randomText}">
+                        <p:dataTable value="#{r.responces}" var="rm" paginator="true" rows="20">
+                            <p:column headerText="#{msg.requestStart}">
+                                <h:outputText value="#{rm.requestStartDate}">
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss.S"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msg.requestEnd}">
+                                <h:outputText value="#{rm.requestEndDate}">
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss.S"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msg.time}">
+                                <h:outputText value="#{rm.requestEnd - rm.requestStart} ms"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab title="#{msg.words}">
+                        <p:dataTable value="#{indexController.words(r)}" var="w" paginator="true" rows="20">
+                            <p:column headerText="#{msg.word}">
+                                <h:outputText value="#{w.key}"/>
+                            </p:column>
+                            <p:column headerText="#{msg.count}">
+                                <h:outputText value="#{w.value}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab title="#{msg.responce}">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="#{msg.fregWord}"/>
+                            <h:outputText value="#{r.response.freqWord}"/>
+                            <h:outputText value="#{msg.avgParagraphSize}"/>
+                            <h:outputText value="#{r.response.avgParagraphSize}"/>
+                            <h:outputText value="#{msg.avgParagraphProcessingTime}"/>
+                            <h:outputText value="#{r.response.avgParagraphProcessingTime}"/>
+                            <h:outputText value="#{msg.totalProcessingTime}"/>
+                            <h:outputText value="#{r.response.totalProcessingTime}"/>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:tabView>
+            </p:rowExpansion>
+        </p:dataTable>
+
+    </ui:define>
+</ui:composition>
